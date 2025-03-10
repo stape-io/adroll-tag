@@ -1,7 +1,7 @@
 homepage: "https://stape.io/"
 documentation: "https://github.com/stape-io/adroll-tag"
 versions:
-  - sha: 82b74690c112fdd6b567f354e5236d27a56c81d4
+  - sha: c16c272d315ae7ba4173c1e4c1f31bc41b554cb9
     changeNotes: Fixed logging conditions.
   - sha: 04db0488d0e4d9c93524345b42fbed4b21cb7045
     changeNotes: Initial release.
