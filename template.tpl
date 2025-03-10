@@ -538,7 +538,7 @@ function sendTrackRequest(mappedEventData) {
             ResponseHeaders: headers,
             ResponseBody: body,
           })
-        )
+        );
       }
 
       if (!data.useOptimisticScenario) {
