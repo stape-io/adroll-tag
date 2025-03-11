@@ -527,15 +527,19 @@ function sendTrackRequest(mappedEventData) {
   sendHttpRequest(
     postUrl,
     (statusCode, headers, body) => {
-      logToConsole({
-        Name: 'Adroll',
-        Type: 'Response',
-        TraceId: traceId,
-        EventName: mappedEventData.event_name,
-        ResponseStatusCode: statusCode,
-        ResponseHeaders: headers,
-        ResponseBody: body,
-      });
+      if (isLoggingEnabled) {
+        logToConsole(
+          JSON.stringify({
+            Name: 'Adroll',
+            Type: 'Response',
+            TraceId: traceId,
+            EventName: mappedEventData.event_name,
+            ResponseStatusCode: statusCode,
+            ResponseHeaders: headers,
+            ResponseBody: body,
+          })
+        );
+      }
 
       if (!data.useOptimisticScenario) {
         if (statusCode >= 200 && statusCode < 400) {
