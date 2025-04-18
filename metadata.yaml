@@ -1,6 +1,8 @@
 homepage: 'https://stape.io/'
 documentation: 'https://github.com/stape-io/adroll-tag'
 versions:
+  - sha: e269d2d8c2ca3bfa36a7e97b51a5eb37223afdfc
+    changeNotes: Fixed external_data parameter location.
   - sha: 363c053d14f13394eb8a46f54127131de589b55b
     changeNotes: Improved consistency. Added tests.
   - sha: c16c272d315ae7ba4173c1e4c1f31bc41b554cb9
