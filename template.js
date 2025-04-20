@@ -82,12 +82,12 @@ function areThereRequiredFieldsMissing(mappedEventData) {
 }
 
 function getPostUrl() {
+  const isTestMode = [true, 'true'].indexOf(data.testMode) !== -1;
   return (
     'https://srv.adroll.com/api?' +
     'advertisable=' +
     enc(data.advertisableId) +
-    '&dry_run=' +
-    (data.testMode ? '1' : '0')
+    (isTestMode ? '&dry_run=1' : '')
   );
 }
 
@@ -318,16 +318,16 @@ function addCustomData(eventData, mappedData) {
   if (eventData.currency) mappedData.currency = eventData.currency;
   else if (currencyFromItems) mappedData.currency = currencyFromItems;
 
+  if (eventData.external_data) mappedData.external_data = eventData.external_data;
+
   if (eventData.search_term) mappedData.event_attributes.keywords = eventData.search_term;
 
   if (eventData.transaction_id) mappedData.event_attributes.order_id = eventData.transaction_id;
 
-  if (eventData.external_data) mappedData.event_attributes.external_data = eventData.external_data;
-
   if (data.customDataList) {
     data.customDataList.forEach((d) => {
       // These go in the 'event_attributes' object.
-      if (['order_id', 'products', 'keywords', 'external_data'].indexOf(d.name) !== -1)
+      if (['order_id', 'products', 'keywords'].indexOf(d.name) !== -1)
         mappedData.event_attributes[d.name] = d.value;
       else mappedData[d.name] = d.value;
     });

@@ -147,11 +147,23 @@ ___TEMPLATE_PARAMETERS___
     "canBeEmptyString": true
   },
   {
-    "type": "CHECKBOX",
+    "type": "SELECT",
     "name": "testMode",
-    "checkboxText": "Test Mode",
+    "displayName": "Test Mode",
+    "macrosInSelect": true,
+    "selectItems": [
+      {
+        "value": false,
+        "displayValue": "False"
+      },
+      {
+        "value": true,
+        "displayValue": "True"
+      }
+    ],
     "simpleValueType": true,
-    "help": "If checked, the event will not be recorded but the API will still return the same response messages. Use this mode to verify your requests are working and your events are constructed correctly."
+    "help": "If checked, the event will not be recorded but the API will still return the same response messages. Use this mode to verify your requests are working and your events are constructed correctly.",
+    "defaultValue": false
   },
   {
     "type": "CHECKBOX",
@@ -596,12 +608,12 @@ function areThereRequiredFieldsMissing(mappedEventData) {
 }
 
 function getPostUrl() {
+  const isTestMode = [true, 'true'].indexOf(data.testMode) !== -1;
   return (
     'https://srv.adroll.com/api?' +
     'advertisable=' +
     enc(data.advertisableId) +
-    '&dry_run=' +
-    (data.testMode ? '1' : '0')
+    (isTestMode ? '&dry_run=1' : '')
   );
 }
 
@@ -832,16 +844,16 @@ function addCustomData(eventData, mappedData) {
   if (eventData.currency) mappedData.currency = eventData.currency;
   else if (currencyFromItems) mappedData.currency = currencyFromItems;
 
+  if (eventData.external_data) mappedData.external_data = eventData.external_data;
+
   if (eventData.search_term) mappedData.event_attributes.keywords = eventData.search_term;
 
   if (eventData.transaction_id) mappedData.event_attributes.order_id = eventData.transaction_id;
 
-  if (eventData.external_data) mappedData.event_attributes.external_data = eventData.external_data;
-
   if (data.customDataList) {
     data.customDataList.forEach((d) => {
       // These go in the 'event_attributes' object.
-      if (['order_id', 'products', 'keywords', 'external_data'].indexOf(d.name) !== -1)
+      if (['order_id', 'products', 'keywords'].indexOf(d.name) !== -1)
         mappedData.event_attributes[d.name] = d.value;
       else mappedData[d.name] = d.value;
     });
@@ -1631,7 +1643,7 @@ setup: |-
   const JSON = require('JSON');
 
   const expectedValue = 'test';
-  const expectedRequestUrl = 'https://srv.adroll.com/api?advertisable=' + expectedValue + '&dry_run=0';
+  const expectedRequestUrl = 'https://srv.adroll.com/api?advertisable=' + expectedValue;
   const expectedRequestOptions = {
     headers: {
       'Content-Type': 'application/json',
@@ -1653,8 +1665,7 @@ setup: |-
           "price": expectedValue
         }
       ],
-      "keywords": expectedValue,
-      "external_data": expectedValue
+      "keywords": expectedValue
     },
     "identifiers": {
       "first_party_cookie": expectedValue,
@@ -1674,7 +1685,8 @@ setup: |-
     "page_location": expectedValue,
     "timestamp": expectedValue,
     "conversion_value": expectedValue,
-    "currency": expectedValue
+    "currency": expectedValue,
+    "external_data": expectedValue
   };
 
   const mockData = {
