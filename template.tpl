@@ -35,185 +35,193 @@ ___TEMPLATE_PARAMETERS___
 
 [
   {
-    "type": "RADIO",
-    "name": "eventType",
-    "displayName": "Event Name Setup Method",
-    "radioItems": [
+    "type": "GROUP",
+    "name": "configGroup",
+    "displayName": "",
+    "groupStyle": "NO_ZIPPY",
+    "subParams": [
       {
-        "value": "standard",
-        "displayValue": "Standard",
-        "subParams": [
+        "type": "RADIO",
+        "name": "eventType",
+        "displayName": "Event Name Setup Method",
+        "radioItems": [
           {
-            "type": "SELECT",
-            "name": "eventNameStandard",
-            "selectItems": [
+            "value": "standard",
+            "displayValue": "Standard",
+            "subParams": [
               {
-                "value": "pageView",
-                "displayValue": "Page View"
-              },
+                "type": "SELECT",
+                "name": "eventNameStandard",
+                "selectItems": [
+                  {
+                    "value": "pageView",
+                    "displayValue": "Page View"
+                  },
+                  {
+                    "value": "productSearch",
+                    "displayValue": "Product Search"
+                  },
+                  {
+                    "value": "addToCart",
+                    "displayValue": "Add to Cart"
+                  },
+                  {
+                    "value": "purchase",
+                    "displayValue": "Purchase"
+                  }
+                ],
+                "simpleValueType": true,
+                "defaultValue": "pageView",
+                "displayName": "Event Name",
+                "valueValidators": [
+                  {
+                    "type": "NON_EMPTY"
+                  }
+                ],
+                "alwaysInSummary": true
+              }
+            ]
+          },
+          {
+            "value": "inherit",
+            "subParams": [],
+            "displayValue": "Inherit from client"
+          },
+          {
+            "value": "custom",
+            "subParams": [
               {
-                "value": "productSearch",
-                "displayValue": "Product Search"
-              },
-              {
-                "value": "addToCart",
-                "displayValue": "Add to Cart"
-              },
-              {
-                "value": "purchase",
-                "displayValue": "Purchase"
+                "type": "TEXT",
+                "name": "eventNameCustom",
+                "displayName": "",
+                "simpleValueType": true,
+                "valueValidators": [
+                  {
+                    "type": "NON_EMPTY"
+                  }
+                ]
               }
             ],
-            "simpleValueType": true,
-            "defaultValue": "pageView",
-            "displayName": "Event Name",
-            "valueValidators": [
-              {
-                "type": "NON_EMPTY"
-              }
-            ],
-            "alwaysInSummary": true
+            "displayValue": "Custom"
+          }
+        ],
+        "simpleValueType": true,
+        "defaultValue": "standard"
+      },
+      {
+        "type": "TEXT",
+        "name": "advertisableId",
+        "displayName": "Advertisable ID",
+        "simpleValueType": true,
+        "help": "You can find it \u003ca href\u003d\"https://app.adroll.com/segments\" target\u003d\"_blank\"\u003ehere\u003c/a\u003e under \u003ci\u003eAdRoll \u003e Website \u003e View Pixel \u003e adroll_adv_id\u003c/i\u003e.",
+        "valueValidators": [
+          {
+            "type": "NON_EMPTY"
           }
         ]
       },
       {
-        "value": "inherit",
-        "subParams": [],
-        "displayValue": "Inherit from client"
-      },
-      {
-        "value": "custom",
-        "subParams": [
-          {
-            "type": "TEXT",
-            "name": "eventNameCustom",
-            "displayName": "",
-            "simpleValueType": true,
-            "valueValidators": [
-              {
-                "type": "NON_EMPTY"
-              }
-            ]
-          }
-        ],
-        "displayValue": "Custom"
-      }
-    ],
-    "simpleValueType": true,
-    "defaultValue": "standard"
-  },
-  {
-    "type": "TEXT",
-    "name": "advertisableId",
-    "displayName": "Advertisable ID",
-    "simpleValueType": true,
-    "help": "You can find it \u003ca href\u003d\"https://app.adroll.com/segments\" target\u003d\"_blank\"\u003ehere\u003c/a\u003e under \u003ci\u003eAdRoll \u003e Website \u003e View Pixel \u003e adroll_adv_id\u003c/i\u003e.",
-    "valueValidators": [
-      {
-        "type": "NON_EMPTY"
-      }
-    ]
-  },
-  {
-    "type": "TEXT",
-    "name": "pixelId",
-    "displayName": "Pixel ID",
-    "simpleValueType": true,
-    "valueValidators": [
-      {
-        "type": "NON_EMPTY"
-      }
-    ],
-    "help": "You can find it \u003ca href\u003d\"https://app.adroll.com/segments\" target\u003d\"_blank\"\u003ehere\u003c/a\u003e under \u003ci\u003eAdRoll \u003e Website \u003e View Pixel \u003e adroll_pix_id\u003c/i\u003e."
-  },
-  {
-    "type": "TEXT",
-    "name": "accessToken",
-    "displayName": "Access Token",
-    "simpleValueType": true,
-    "valueValidators": [
-      {
-        "type": "NON_EMPTY"
-      }
-    ],
-    "help": "Contact your account manager to get the Access Token."
-  },
-  {
-    "type": "TEXT",
-    "name": "itemIdKey",
-    "displayName": "Custom Item Id Key",
-    "simpleValueType": true,
-    "help": "You can specify a custom key, which will be used to set the content item id, by default \u003ci\u003eitem_id\u003c/i\u003e will be used. This may be useful if you are using WooCommerce extensions.",
-    "canBeEmptyString": true
-  },
-  {
-    "type": "SELECT",
-    "name": "testMode",
-    "displayName": "Test Mode",
-    "macrosInSelect": true,
-    "selectItems": [
-      {
-        "value": false,
-        "displayValue": "False"
-      },
-      {
-        "value": true,
-        "displayValue": "True"
-      }
-    ],
-    "simpleValueType": true,
-    "help": "If checked, the event will not be recorded but the API will still return the same response messages. Use this mode to verify your requests are working and your events are constructed correctly.",
-    "defaultValue": false
-  },
-  {
-    "type": "CHECKBOX",
-    "name": "useOptimisticScenario",
-    "checkboxText": "Use Optimistic Scenario",
-    "simpleValueType": true,
-    "help": "The tag will call gtmOnSuccess() without waiting for a response from the API. This will speed up sGTM response time however your tag will always return the status fired successfully even in case it is not."
-  },
-  {
-    "type": "CHECKBOX",
-    "name": "overrideCookieDomain",
-    "checkboxText": "Override the cookie domain",
-    "simpleValueType": true,
-    "subParams": [
-      {
         "type": "TEXT",
-        "name": "overridenCookieDomain",
-        "displayName": "Cookie Domain",
+        "name": "pixelId",
+        "displayName": "Pixel ID",
         "simpleValueType": true,
-        "enablingConditions": [
-          {
-            "paramName": "overrideCookieDomain",
-            "paramValue": true,
-            "type": "EQUALS"
-          }
-        ],
-        "help": "",
         "valueValidators": [
           {
             "type": "NON_EMPTY"
           }
         ],
-        "valueHint": "example.com"
+        "help": "You can find it \u003ca href\u003d\"https://app.adroll.com/segments\" target\u003d\"_blank\"\u003ehere\u003c/a\u003e under \u003ci\u003eAdRoll \u003e Website \u003e View Pixel \u003e adroll_pix_id\u003c/i\u003e."
+      },
+      {
+        "type": "TEXT",
+        "name": "accessToken",
+        "displayName": "Access Token",
+        "simpleValueType": true,
+        "valueValidators": [
+          {
+            "type": "NON_EMPTY"
+          }
+        ],
+        "help": "Contact your account manager to get the Access Token."
+      },
+      {
+        "type": "TEXT",
+        "name": "itemIdKey",
+        "displayName": "Custom Item Id Key",
+        "simpleValueType": true,
+        "help": "You can specify a custom key, which will be used to set the content item id, by default \u003ci\u003eitem_id\u003c/i\u003e will be used. This may be useful if you are using WooCommerce extensions.",
+        "canBeEmptyString": true
+      },
+      {
+        "type": "SELECT",
+        "name": "testMode",
+        "displayName": "Test Mode",
+        "macrosInSelect": true,
+        "selectItems": [
+          {
+            "value": false,
+            "displayValue": "False"
+          },
+          {
+            "value": true,
+            "displayValue": "True"
+          }
+        ],
+        "simpleValueType": true,
+        "help": "If checked, the event will not be recorded but the API will still return the same response messages. Use this mode to verify your requests are working and your events are constructed correctly.",
+        "defaultValue": false
+      },
+      {
+        "type": "CHECKBOX",
+        "name": "useOptimisticScenario",
+        "checkboxText": "Use Optimistic Scenario",
+        "simpleValueType": true,
+        "help": "The tag will call gtmOnSuccess() without waiting for a response from the API. This will speed up sGTM response time however your tag will always return the status fired successfully even in case it is not."
+      },
+      {
+        "type": "CHECKBOX",
+        "name": "overrideCookieDomain",
+        "checkboxText": "Override the cookie domain",
+        "simpleValueType": true,
+        "subParams": [
+          {
+            "type": "TEXT",
+            "name": "overridenCookieDomain",
+            "displayName": "Cookie Domain",
+            "simpleValueType": true,
+            "enablingConditions": [
+              {
+                "paramName": "overrideCookieDomain",
+                "paramValue": true,
+                "type": "EQUALS"
+              }
+            ],
+            "help": "",
+            "valueValidators": [
+              {
+                "type": "NON_EMPTY"
+              }
+            ],
+            "valueHint": "example.com"
+          }
+        ],
+        "help": "Enable this option to override the cookie domain.\n\u003cbr\u003e\nEnter your website\u0027s top-level domain as a fixed value (e.g., example.com).\n\u003cbr\u003e\nIf left unchecked, the domain will be automatically determined using the following priority:\n\u003cul\u003e\n\u003cli\u003eDomain of the \u003ci\u003eForwarded\u003c/i\u003e header (if present).\u003c/li\u003e\n\u003cli\u003eDomain of the \u003ci\u003eX-Forwarded-Host\u003c/i\u003e header (if present).\u003c/li\u003e\n\u003cli\u003eDomain of the \u003ci\u003eHost\u003c/i\u003e header.\u003c/li\u003e\n\u003c/ul\u003e"
+      },
+      {
+        "type": "CHECKBOX",
+        "name": "notSetClickIdCookie",
+        "checkboxText": "Do not set Click ID (__adroll_adct) cookie",
+        "simpleValueType": true,
+        "help": "Do not set Click ID (__adroll_adct) cookie if it was added to user data."
+      },
+      {
+        "type": "CHECKBOX",
+        "name": "notSetBrowserIdCookie",
+        "checkboxText": "Do not set Browser ID (__adroll_fpc) cookie",
+        "simpleValueType": true,
+        "help": "Do not set Browser ID (__adroll_fpc) cookie if it was added to user data. \u003cbr\u003e Do not auto-generate it. \u003cbr\u003e If an existing Browser ID is found, it will still be sent in the request but not stored as a cookie. It can be sourced from:\u003cul\u003e \u003cli\u003ean already existing \u003ci\u003e__adroll_fpc\u003c/i\u003e cookie\u003c/li\u003e \u003cli\u003eEvent Data parameters: \u003ci\u003ecommonCookie.__adroll_fpc\u003c/i\u003e or \u003ci\u003e__adroll_fpc\u003c/i\u003e\u003c/li\u003e \u003c/ul\u003e"
       }
-    ],
-    "help": "Enable this option to override the cookie domain.\n\u003cbr\u003e\nEnter your website\u0027s top-level domain as a fixed value (e.g., example.com).\n\u003cbr\u003e\nIf left unchecked, the domain will be automatically determined using the following priority:\n\u003cul\u003e\n\u003cli\u003eDomain of the \u003ci\u003eForwarded\u003c/i\u003e header (if present).\u003c/li\u003e\n\u003cli\u003eDomain of the \u003ci\u003eX-Forwarded-Host\u003c/i\u003e header (if present).\u003c/li\u003e\n\u003cli\u003eDomain of the \u003ci\u003eHost\u003c/i\u003e header.\u003c/li\u003e\n\u003c/ul\u003e"
-  },
-  {
-    "type": "CHECKBOX",
-    "name": "notSetClickIdCookie",
-    "checkboxText": "Do not set Click ID (__adroll_adct) cookie",
-    "simpleValueType": true,
-    "help": "Do not set Click ID (__adroll_adct) cookie if it was added to user data."
-  },
-  {
-    "type": "CHECKBOX",
-    "name": "notSetBrowserIdCookie",
-    "checkboxText": "Do not set Browser ID (__adroll_fpc) cookie",
-    "simpleValueType": true,
-    "help": "Do not set Browser ID (__adroll_fpc) cookie if it was added to user data. \u003cbr\u003e Do not auto-generate it. \u003cbr\u003e If an existing Browser ID is found, it will still be sent in the request but not stored as a cookie. It can be sourced from:\u003cul\u003e \u003cli\u003ean already existing \u003ci\u003e__adroll_fpc\u003c/i\u003e cookie\u003c/li\u003e \u003cli\u003eEvent Data parameters: \u003ci\u003ecommonCookie.__adroll_fpc\u003c/i\u003e or \u003ci\u003e__adroll_fpc\u003c/i\u003e\u003c/li\u003e \u003c/ul\u003e"
+    ]
   },
   {
     "displayName": "Server Parameters",
@@ -468,14 +476,13 @@ ___TEMPLATE_PARAMETERS___
   },
   {
     "type": "GROUP",
-    "name": "consentSettingsGroup",
-    "displayName": "Consent Settings",
+    "name": "tagExecutionConsentSettingsGroup",
+    "displayName": "Tag Execution Consent Settings",
     "groupStyle": "ZIPPY_CLOSED",
     "subParams": [
       {
         "type": "RADIO",
         "name": "adStorageConsent",
-        "displayName": "",
         "radioItems": [
           {
             "value": "optional",
@@ -483,7 +490,8 @@ ___TEMPLATE_PARAMETERS___
           },
           {
             "value": "required",
-            "displayValue": "Send data in case marketing consent given"
+            "displayValue": "Send data in case marketing consent given",
+            "help": "Aborts the tag execution if marketing consent (\u003ci\u003ead_storage\u003c/i\u003e Google Consent Mode or Stape\u0027s Data Tag parameter) is not given."
           }
         ],
         "simpleValueType": true,
@@ -524,22 +532,22 @@ ___TEMPLATE_PARAMETERS___
 
 ___SANDBOXED_JS_FOR_SERVER___
 
-const getRequestHeader = require('getRequestHeader');
-const getAllEventData = require('getAllEventData');
-const setCookie = require('setCookie');
-const getCookieValues = require('getCookieValues');
 const encodeUriComponent = require('encodeUriComponent');
-const makeString = require('makeString');
-const makeInteger = require('makeInteger');
-const sendHttpRequest = require('sendHttpRequest');
+const generateRandom = require('generateRandom');
+const getAllEventData = require('getAllEventData');
+const getContainerVersion = require('getContainerVersion');
+const getCookieValues = require('getCookieValues');
+const getRequestHeader = require('getRequestHeader');
+const getTimestampMillis = require('getTimestampMillis');
+const getType = require('getType');
 const JSON = require('JSON');
 const logToConsole = require('logToConsole');
-const generateRandom = require('generateRandom');
-const getTimestampMillis = require('getTimestampMillis');
-const getContainerVersion = require('getContainerVersion');
-const parseUrl = require('parseUrl');
+const makeInteger = require('makeInteger');
+const makeString = require('makeString');
 const Math = require('Math');
-const getType = require('getType');
+const parseUrl = require('parseUrl');
+const sendHttpRequest = require('sendHttpRequest');
+const setCookie = require('setCookie');
 
 /**********************************************************************************************/
 
@@ -930,7 +938,7 @@ function isValidValue(value) {
 }
 
 function enc(data) {
-  data = data || '';
+  if (['null', 'undefined'].indexOf(getType(data)) !== -1) data = '';
   return encodeUriComponent(makeString(data));
 }
 
@@ -1699,4 +1707,5 @@ setup: |-
 ___NOTES___
 
 Created on 2/20/2025, 10:34:10 AM
+
 

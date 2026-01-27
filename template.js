@@ -1,19 +1,19 @@
-const getRequestHeader = require('getRequestHeader');
-const getAllEventData = require('getAllEventData');
-const setCookie = require('setCookie');
-const getCookieValues = require('getCookieValues');
 const encodeUriComponent = require('encodeUriComponent');
-const makeString = require('makeString');
-const makeInteger = require('makeInteger');
-const sendHttpRequest = require('sendHttpRequest');
+const generateRandom = require('generateRandom');
+const getAllEventData = require('getAllEventData');
+const getContainerVersion = require('getContainerVersion');
+const getCookieValues = require('getCookieValues');
+const getRequestHeader = require('getRequestHeader');
+const getTimestampMillis = require('getTimestampMillis');
+const getType = require('getType');
 const JSON = require('JSON');
 const logToConsole = require('logToConsole');
-const generateRandom = require('generateRandom');
-const getTimestampMillis = require('getTimestampMillis');
-const getContainerVersion = require('getContainerVersion');
-const parseUrl = require('parseUrl');
+const makeInteger = require('makeInteger');
+const makeString = require('makeString');
 const Math = require('Math');
-const getType = require('getType');
+const parseUrl = require('parseUrl');
+const sendHttpRequest = require('sendHttpRequest');
+const setCookie = require('setCookie');
 
 /**********************************************************************************************/
 
@@ -404,7 +404,7 @@ function isValidValue(value) {
 }
 
 function enc(data) {
-  data = data || '';
+  if (['null', 'undefined'].indexOf(getType(data)) !== -1) data = '';
   return encodeUriComponent(makeString(data));
 }
 
