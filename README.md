@@ -33,6 +33,9 @@ Send site or app events directly to AdRoll from your GTM server container. This 
 - **IP Address** – The user's IP address.
 - **At Least One User Identifier** – Select from identifiers such as email, device ID, browser ID etc.
 
+## Useful links:
+
+[Step-by-step guide on how to configure AdRoll tag](https://stape.io/blog/adroll-server-side-tracking)
 
 ## Open Source
 
