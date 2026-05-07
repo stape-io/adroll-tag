@@ -40,3 +40,6 @@ Send site or app events directly to AdRoll from your GTM server container. This 
 ## Open Source
 
 The **AdRoll Tag for GTM Server Side** is developed and maintained by the [Stape Team](https://stape.io/) under the Apache 2.0 license.
+
+### GTM Gallery Status
+🟢 [Listed](https://tagmanager.google.com/gallery/#/owners/stape-io/templates/adroll-tag)
