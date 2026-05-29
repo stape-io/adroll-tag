@@ -1,7 +1,6 @@
 const encodeUriComponent = require('encodeUriComponent');
 const generateRandom = require('generateRandom');
 const getAllEventData = require('getAllEventData');
-const getContainerVersion = require('getContainerVersion');
 const getCookieValues = require('getCookieValues');
 const getRequestHeader = require('getRequestHeader');
 const getTimestampMillis = require('getTimestampMillis');
@@ -16,9 +15,6 @@ const sendHttpRequest = require('sendHttpRequest');
 const setCookie = require('setCookie');
 
 /**********************************************************************************************/
-
-const isLoggingEnabled = determinateIsLoggingEnabled();
-const traceId = isLoggingEnabled ? getRequestHeader('trace-id') : undefined;
 
 const eventData = getAllEventData();
 
@@ -37,9 +33,8 @@ if (areThereRequiredFieldsMissing(mappedEventData)) {
   log({
     Name: 'AdRoll',
     Type: 'Message',
-    TraceId: traceId,
     EventName: mappedEventData.event_name,
-    Message: 'Event was not sent to AdRoll.',
+    Message: '🛑 [ERROR] Event was not sent to AdRoll.',
     Reason: 'Missing required fields'
   });
 
@@ -50,7 +45,7 @@ setCookiesIfNeeded(mappedEventData);
 sendTrackRequest(mappedEventData);
 
 if (data.useOptimisticScenario) {
-  data.gtmOnSuccess();
+  return data.gtmOnSuccess();
 }
 
 /**********************************************************************************************/
@@ -95,29 +90,9 @@ function sendTrackRequest(mappedEventData) {
   const postBody = mappedEventData;
   const postUrl = getPostUrl();
 
-  log({
-    Name: 'AdRoll',
-    Type: 'Request',
-    TraceId: traceId,
-    EventName: mappedEventData.event_name,
-    RequestMethod: 'POST',
-    RequestUrl: postUrl,
-    RequestBody: postBody
-  });
-
   sendHttpRequest(
     postUrl,
     (statusCode, headers, body) => {
-      log({
-        Name: 'AdRoll',
-        Type: 'Response',
-        TraceId: traceId,
-        EventName: mappedEventData.event_name,
-        ResponseStatusCode: statusCode,
-        ResponseHeaders: headers,
-        ResponseBody: body
-      });
-
       if (!data.useOptimisticScenario) {
         if (statusCode >= 200 && statusCode < 400) {
           data.gtmOnSuccess();
@@ -225,29 +200,23 @@ function addUserData(eventData, mappedData) {
   const browserId = getBrowserId();
   if (browserId) mappedData.identifiers.first_party_cookie = browserId;
 
-  if (eventData.email) mappedData.identifiers.email = eventData.email;
-  else if (user_data.email_address) mappedData.identifiers.email = user_data.email_address;
-  else if (user_data.email) mappedData.identifiers.email = user_data.email;
+  const email = eventData.email || user_data.email_address || user_data.email;
+  if (email) mappedData.identifiers.email = email;
 
-  if (eventData.email_sha256) mappedData.identifiers.email_sha256 = eventData.email_sha256;
-  else if (user_data.sha256_email_address) {
-    mappedData.identifiers.email_sha256 = user_data.sha256_email_address;
-  }
+  const emailSha256 = eventData.email_sha256 || user_data.sha256_email_address;
+  if (emailSha256) mappedData.identifiers.email_sha256 = emailSha256;
 
   if (eventData.email_md5) mappedData.identifiers.email_md5 = eventData.email_md5;
 
-  if (eventData.external_id) mappedData.identifiers.user_id = eventData.external_id;
-  else if (eventData.user_id) mappedData.identifiers.user_id = eventData.user_id;
-  else if (eventData.userId) mappedData.identifiers.user_id = eventData.userId;
+  const userId = eventData.external_id || eventData.user_id || eventData.userId;
+  if (userId) mappedData.identifiers.user_id = userId;
 
-  if (eventData.device_id) mappedData.identifiers.device_id = eventData.device_id;
-  else if (eventData['x-ga-resettable_device_id']) {
-    // Firebase events - IDFA (iOS) or GAID (Google)
-    mappedData.identifiers.device_id = eventData['x-ga-resettable_device_id'];
-  } else if (eventData['x-ga-vendor_device_id']) {
-    // Firebase events - IDFV (iOS)
-    mappedData.identifiers.device_id = eventData['x-ga-vendor_device_id'];
-  }
+  const mobileDeviceId =
+    eventData.mobile_device_id ||
+    eventData['x-ga-resettable_device_id'] ||
+    eventData['x-ga-vendor_device_id'];
+  if (mobileDeviceId && mobileDeviceId !== '00000000-0000-0000-0000-000000000000')
+    mappedData.identifiers.device_id = mobileDeviceId;
 
   if (eventData.ip_override) {
     mappedData.ip = eventData.ip_override.split(' ').join('').split(',')[0];
@@ -268,16 +237,16 @@ function addUserData(eventData, mappedData) {
 }
 
 function addAppDeviceData(eventData, mappedData) {
-  if (eventData.device_os) mappedData.device_os = eventData.device_os;
-  else if (eventData['x-ga-platform']) mappedData.device_os = eventData['x-ga-platform']; // Firebase events
+  const deviceOS = eventData.device_os || eventData['x-ga-platform']; // x-ga-platform is used in Firebase events to indicate the device OS.
+  if (deviceOS) mappedData.device_os = deviceOS;
 
   if (eventData.device_type) mappedData.device_type = eventData.device_type;
 
-  if (eventData.package_app_name) mappedData.package_app_name = eventData.package_app_name;
-  else if (eventData.app_id) mappedData.package_app_name = eventData.app_id; // Firebase events
+  const appName = eventData.package_app_name || eventData.app_id;
+  if (appName) mappedData.package_app_name = appName;
 
-  if (eventData.package_app_version) mappedData.package_app_version = eventData.package_app_version;
-  else if (eventData.app_version) mappedData.package_app_version = eventData.app_version; // Firebase events
+  const appVersion = eventData.package_app_version || eventData.app_version;
+  if (appVersion) mappedData.package_app_version = appVersion;
 
   // Override with user input data from template fields.
   if (data.appDeviceDataList) {
@@ -312,11 +281,11 @@ function addCustomData(eventData, mappedData) {
     });
   }
 
-  if (eventData.value) mappedData.conversion_value = eventData.value;
-  else if (valueFromItems) mappedData.conversion_value = valueFromItems;
+  const value = eventData.value || valueFromItems;
+  if (value) mappedData.conversion_value = value;
 
-  if (eventData.currency) mappedData.currency = eventData.currency;
-  else if (currencyFromItems) mappedData.currency = currencyFromItems;
+  const currency = eventData.currency || currencyFromItems;
+  if (currency) mappedData.currency = currency;
 
   if (eventData.external_data) mappedData.external_data = eventData.external_data;
 
@@ -400,7 +369,7 @@ function setCookiesIfNeeded(eventData) {
 
 function isValidValue(value) {
   const valueType = getType(value);
-  return valueType !== 'null' && valueType !== 'undefined' && value !== '';
+  return valueType !== 'null' && valueType !== 'undefined' && value !== '' && value === value;
 }
 
 function enc(data) {
@@ -415,30 +384,7 @@ function isConsentGivenOrNotRequired() {
   return xGaGcs[2] === '1';
 }
 
-function log(logObject) {
-  if (isLoggingEnabled) {
-    logToConsole(JSON.stringify(logObject));
-  }
-}
-
-function determinateIsLoggingEnabled() {
-  const containerVersion = getContainerVersion();
-  const isDebug = !!(
-    containerVersion &&
-    (containerVersion.debugMode || containerVersion.previewMode)
-  );
-
-  if (!data.logType) {
-    return isDebug;
-  }
-
-  if (data.logType === 'no') {
-    return false;
-  }
-
-  if (data.logType === 'debug') {
-    return isDebug;
-  }
-
-  return data.logType === 'always';
+function log(rawDataToLog) {
+  rawDataToLog.TraceId = getRequestHeader('trace-id');
+  logToConsole(JSON.stringify(rawDataToLog));
 }
