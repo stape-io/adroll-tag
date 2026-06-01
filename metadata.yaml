@@ -1,6 +1,8 @@
 homepage: 'https://stape.io/'
 documentation: 'https://github.com/stape-io/adroll-tag'
 versions:
+  - sha: 6c6480684fa23208900fb0473fbc9385766869a2
+    changeNotes: Logging removal.
   - sha: 2efdc8bb53be6a46c5e6eb3885dfdda612c16abb
     changeNotes: Updated tag consent section.
   - sha: e269d2d8c2ca3bfa36a7e97b51a5eb37223afdfc
