@@ -1,6 +1,8 @@
 homepage: 'https://stape.io/'
 documentation: 'https://github.com/stape-io/adroll-tag'
 versions:
+  - sha: d30ecab3a6e7d51ec7e3788c2a29e49fbc4e2586
+    changeNotes: Read common cookie from eventData.common_cookie.
   - sha: 6c6480684fa23208900fb0473fbc9385766869a2
     changeNotes: Logging removal.
   - sha: 2efdc8bb53be6a46c5e6eb3885dfdda612c16abb
