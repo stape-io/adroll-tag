@@ -308,14 +308,14 @@ function addCustomData(eventData, mappedData) {
 function getClickId() {
   const searchParams = parseUrl(url).searchParams;
   if (searchParams && searchParams.adct) return searchParams.adct;
-  const commonCookie = eventData.commonCookie || {};
+  const commonCookie = eventData.common_cookie || {};
   return (
     getCookieValues('__adroll_adct')[0] || eventData.__adroll_adct || commonCookie.__adroll_adct
   );
 }
 
 function getBrowserId() {
-  const commonCookie = eventData.commonCookie || {};
+  const commonCookie = eventData.common_cookie || {};
   return (
     getCookieValues('__adroll_fpc')[0] ||
     eventData.__adroll_fpc ||

@@ -219,7 +219,7 @@ ___TEMPLATE_PARAMETERS___
         "name": "notSetBrowserIdCookie",
         "checkboxText": "Do not set Browser ID (__adroll_fpc) cookie",
         "simpleValueType": true,
-        "help": "Do not set Browser ID (__adroll_fpc) cookie if it was added to user data. \u003cbr\u003e Do not auto-generate it. \u003cbr\u003e If an existing Browser ID is found, it will still be sent in the request but not stored as a cookie. It can be sourced from:\u003cul\u003e \u003cli\u003ean already existing \u003ci\u003e__adroll_fpc\u003c/i\u003e cookie\u003c/li\u003e \u003cli\u003eEvent Data parameters: \u003ci\u003ecommonCookie.__adroll_fpc\u003c/i\u003e or \u003ci\u003e__adroll_fpc\u003c/i\u003e\u003c/li\u003e \u003c/ul\u003e"
+        "help": "Do not set Browser ID (__adroll_fpc) cookie if it was added to user data. \u003cbr\u003e Do not auto-generate it. \u003cbr\u003e If an existing Browser ID is found, it will still be sent in the request but not stored as a cookie. It can be sourced from:\u003cul\u003e \u003cli\u003ean already existing \u003ci\u003e__adroll_fpc\u003c/i\u003e cookie\u003c/li\u003e \u003cli\u003eEvent Data parameters: \u003ci\u003ecommon_cookie.__adroll_fpc\u003c/i\u003e or \u003ci\u003e__adroll_fpc\u003c/i\u003e\u003c/li\u003e \u003c/ul\u003e"
       }
     ]
   },
@@ -814,14 +814,14 @@ function addCustomData(eventData, mappedData) {
 function getClickId() {
   const searchParams = parseUrl(url).searchParams;
   if (searchParams && searchParams.adct) return searchParams.adct;
-  const commonCookie = eventData.commonCookie || {};
+  const commonCookie = eventData.common_cookie || {};
   return (
     getCookieValues('__adroll_adct')[0] || eventData.__adroll_adct || commonCookie.__adroll_adct
   );
 }
 
 function getBrowserId() {
-  const commonCookie = eventData.commonCookie || {};
+  const commonCookie = eventData.common_cookie || {};
   return (
     getCookieValues('__adroll_fpc')[0] ||
     eventData.__adroll_fpc ||
@@ -1613,6 +1613,10 @@ setup: |-
 
 
 ___NOTES___
+
+2026-11-23 - Change Notes:
+  - Fix the Event Data common cookie lookup: read eventData.common_cookie instead of eventData.commonCookie, which is never set, so __adroll_adct and __adroll_fpc are now taken from the common cookie object as intended
+  - Update the Browser ID help text to name the correct common_cookie Event Data parameter
 
 2026-05-25 Change Notes:
  - Logging removal.
